@@ -337,8 +337,8 @@ def chat2plot(
               data structure. If you want a custom schema definition, pass a type inheriting from pydantic.BaseModel
               as your own chart setting.
         chat: The chat instance for interaction with LLMs.
-              If omitted, `ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0613")` will be used.
-        function_call:
+              If omitted, `llm = AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
+            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com")` will be used.
         language: Language of explanations. If not specified, it will be automatically inferred from user prompts.
         description_strategy: Type of how the information in the dataset is embedded in the prompt.
               Defaults to "head" which embeds the contents of df.head(5) in the prompt.
