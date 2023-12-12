@@ -10,7 +10,11 @@ import commentjson
 import jsonschema
 import pandas as pd
 import pydantic
-from langchain.chat_models import ChatOpenAI
+#from langchain.chat_models import ChatOpenAI
+
+from langchain.chat_models import AzureChatOpenAI
+
+
 from langchain.chat_models.base import BaseChatModel
 from langchain.schema import BaseMessage, FunctionMessage, HumanMessage, SystemMessage
 from plotly.graph_objs import Figure
