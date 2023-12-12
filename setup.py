@@ -25,18 +25,16 @@ def requirements_from_file(filename):
 
 
 setup(
-    name="chat2plot",
+    name="datavis",
     packages=find_packages(),
     version=get_version(),
     license="MIT",
     install_requires=requirements_from_file("requirements.txt"),
-    author="nyanp",
-    author_email="Noumi.Taiga@gmail.com",
-    url="https://github.com/nyanp/chat2plot",
-    description="chat to visualization with LLM",
+    
+    description="Data table visualization with LLM",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    keywords="llm visualization chart gpt",
+    keywords="llm-based data visualization",
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.10",
