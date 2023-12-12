@@ -28,6 +28,10 @@ from chat2plot.schema import PlotConfig, ResponseType, get_schema_of_chart_confi
 
 _logger = getLogger(__name__)
 
+llm = AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
+            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com", openai_api_type="azure" 
+            openai_api_version="2023-03-15-preview")
+
 T = TypeVar("T", bound=pydantic.BaseModel)
 ModelDeserializer = Callable[[dict[str, Any]], T]
 
@@ -56,7 +60,7 @@ class ChatSession:
 
     def __init__(
         self,
-        chat: BaseChatModel,
+        chat: llm,
         df: pd.DataFrame,
         system_prompt_template: str,
         user_prompt_template: str,
@@ -129,7 +133,7 @@ class Chat2Plot(Chat2PlotBase):
         df: pd.DataFrame,
         chart_schema: Literal["simple"] | Type[pydantic.BaseModel],
         *,
-        chat: BaseChatModel | None = None,
+        chat: llm,
         function_call: bool | Literal["auto"] = False,
         language: str | None = None,
         description_strategy: str = "head",
@@ -258,7 +262,7 @@ class Chat2Vega(Chat2PlotBase):
     def __init__(
         self,
         df: pd.DataFrame,
-        chat: BaseChatModel | None = None,
+        chat: llm,
         language: str | None = None,
         description_strategy: str = "head",
         verbose: bool = False,
@@ -325,7 +329,7 @@ llm = AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
 def chat2plot(
     df: pd.DataFrame,
     schema_definition: Literal["simple", "vega"] | Type[pydantic.BaseModel] = "simple",
-    chat: llm | None = None,
+    chat: llm ,
     function_call: bool | Literal["auto"] = "auto",
     language: str | None = None,
     description_strategy: str = "head",
@@ -359,7 +363,7 @@ def chat2plot(
         return Chat2Plot(
             df,
             "simple",
-            chat=chat,
+            chat=llm,
             language=language,
             description_strategy=description_strategy,
             verbose=verbose,
@@ -410,14 +414,17 @@ def parse_json(content: str) -> tuple[str, dict[str, Any]]:
     return explanation_part.strip(), delete_null_field(commentjson.loads(json_part))
 
 
-def _get_or_default_chat_model(chat: BaseChatModel | None) -> BaseChatModel:
+def _get_or_default_chat_model(chat: llm):
     if chat is None:
-        return ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0613")  # type: ignore
+        return AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
+            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com", openai_api_type="azure" 
+            openai_api_version="2023-03-15-preview")  # type: ignore
     return chat
 
 
-def _has_function_call_capability(chat: BaseChatModel) -> bool:
-    if not isinstance(chat, ChatOpenAI):
+
+def _has_function_call_capability(chat: llm) -> bool:
+    if not isinstance(chat, AzureChatOpenAI):
         return False
     return any(
         chat.model_name.startswith(prefix)
