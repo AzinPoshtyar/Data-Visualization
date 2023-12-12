@@ -30,7 +30,7 @@ setup(
     version=get_version(),
     license="MIT",
     install_requires=requirements_from_file("requirements.txt"),
-    
+    ppppppppppppppppp
     description="Data table visualization with LLM",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
