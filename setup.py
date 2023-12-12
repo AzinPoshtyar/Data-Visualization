@@ -30,7 +30,9 @@ setup(
     version=get_version(),
     license="MIT",
     install_requires=requirements_from_file("requirements.txt"),
-    ppppppppppppppppp
+    author="Azin",
+    author_email="a.poshtyar@gmail.com",
+    url="https://github.com/AzinPoshtyar/Data-Visualization",
     description="Data table visualization with LLM",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
