@@ -318,11 +318,14 @@ class Chat2Vega(Chat2PlotBase):
     ) -> Plot:
         return self.query(q, config_only, show_plot)
 
-
+llm = AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
+            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com", openai_api_type="azure" 
+            openai_api_version="2023-03-15-preview")
+            
 def chat2plot(
     df: pd.DataFrame,
     schema_definition: Literal["simple", "vega"] | Type[pydantic.BaseModel] = "simple",
-    chat: BaseChatModel | None = None,
+    chat: llm | None = None,
     function_call: bool | Literal["auto"] = "auto",
     language: str | None = None,
     description_strategy: str = "head",
@@ -338,7 +341,8 @@ def chat2plot(
               as your own chart setting.
         chat: The chat instance for interaction with LLMs.
               If omitted, `llm = AzureChatOpenAI(temperature=0, deployment_name = "gpt-4",
-            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com")` will be used.
+            openai_api_base="https://oai-fc-playground-programmatic-dev.openai.azure.com", openai_api_type="azure" 
+            openai_api_version="2023-03-15-preview")` will be used.
         language: Language of explanations. If not specified, it will be automatically inferred from user prompts.
         description_strategy: Type of how the information in the dataset is embedded in the prompt.
               Defaults to "head" which embeds the contents of df.head(5) in the prompt.
